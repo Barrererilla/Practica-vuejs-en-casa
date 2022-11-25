@@ -14,22 +14,32 @@
         const syntaxisVue = Vue.createApp({
             data(){
                 return{
-                    firstName: 'Yave Felipe',
-                    lastName: ' Barrera Pico',
-                    now: new Date()
+                    puerta: 'Puerta está cerrada',
+                    close: true
+                }
+            },
+            watch:{
+                close(value){
+                    if(value){
+                        this.puerta = 'Cerrada';
+                    }else{
+                        this.puerta = 'Abierta';
+                    }
                 }
             },
             computed:{
-                conct(){
-                    return this.firstName + this.lastName;
-                },
-                date(){
-                    return this.now.toLocaleDateString();
+                abrir(){
+                    return this.close ? 'Abrir' : 'Cerrar'
+                }
+            },
+            methods:{
+                puertica(){
+                    this.close = !this.close
                 }
             },
             template:`
-                <h5>{{ conct }}</h5>
-                <p>{{ date }}</p>
+                <h5>{{ puerta }}</h5>
+                <button @click='puertica'>{{ abrir }}</button>
             `
         }).mount('#app');
     </script>
