@@ -15,16 +15,35 @@
         const syntaxisVue = Vue.createApp({
             data(){
                 return{
-                    puerta: 'Puerta está cerrada',
+                    puerta: 'Acceder a mi cuenta',
                     close: true,
+                    username: '',
+                    post: [{
+                            title: 'Perros',
+                            description: 'Animales que ladran',
+                        },
+                        {
+                            title: 'Gatos',
+                            description: 'Animales que mauyan',
+                        },
+                        {
+                            title: 'Conejos',
+                            description: 'Animales que comen zanahorias',
+                        },
+                    ],
+                    addPost: {
+                        title: '',
+                        description: '',
+                    },
                 }
             },
             watch:{
                 close(value){
                     if(value){
-                        this.puerta = 'Cerrada';
+                        this.puerta = 'Acceder a tu cuenta';
+                        this.username = '';
                     }else{
-                        this.puerta = 'Abierta';
+                        this.puerta = 'Salir de tu cuenta';
                     }
                 }
             },
@@ -33,17 +52,58 @@
                     return this.close ? 'Abrir' : 'Cerrar'
                 },
                 styles(){
-                    return this.close ? 'close' : 'open'
+                    return this.close ? 'close' : 'open';
                 }
             },
             methods:{
                 puertica(){
                     this.close = !this.close
+                },
+                anadir(){
+                    const arrayPost = [];
+                    if(this.addPost.title != '' && this.addPost.description != ''){
+                        arrayPost['title'] = this.addPost.title;
+                        arrayPost['description'] = this.addPost.description;
+                        this.post.push(arrayPost);
+                    }
+                },
+                removePost(i){
+                    this.post.splice(i, 1);
                 }
             },
             template:`
-                <h5 :class='styles'>{{ puerta }}</h5>
-                <button @click='puertica'>{{ abrir }}</button>
+            <div class='container' :class='styles' >
+                <h5>{{ puerta }}</h5>
+                <div class='mb-input' v-if='close' >
+                    Enter your name: <input type='text' v-model='username' />
+                </div>
+                <div class='mb-input' v-else >
+                    Your username is: <strong> {{ username }} </strong>
+
+                    <div class='modificar-inputs'>
+                        Enter a title:
+                        <input type='text' v-model='this.addPost.title' />
+                        Enter a description:
+                        <input type='text' v-model='this.addPost.description' />
+                        <button @click='anadir' >Add list</button>
+                    </div>    
+
+                    <div class='title-margin'>
+                        <div v-for='(item, index) in post' :key='index' class='height-title' > 
+                            <div>
+                                <strong> {{ item.title }} </strong>
+                                <button @click='removePost' >X</button>
+                            </div>
+                            <label>{{ item.description }}</label>
+                        </div>
+                </div>
+                </div>
+
+                <button @click='puertica'>
+                    <div v-if='close' >Acceder</div>
+                    <div v-else>Salir</div>
+                </button>
+            </div>
             `
         }).mount('#app');
     </script>
