@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
     <title>Vue.js</title>
 </head>
 <body>
@@ -15,7 +16,7 @@
             data(){
                 return{
                     puerta: 'Puerta está cerrada',
-                    close: true
+                    close: true,
                 }
             },
             watch:{
@@ -30,6 +31,9 @@
             computed:{
                 abrir(){
                     return this.close ? 'Abrir' : 'Cerrar'
+                },
+                styles(){
+                    return this.close ? 'close' : 'open'
                 }
             },
             methods:{
@@ -38,7 +42,7 @@
                 }
             },
             template:`
-                <h5>{{ puerta }}</h5>
+                <h5 :class='styles'>{{ puerta }}</h5>
                 <button @click='puertica'>{{ abrir }}</button>
             `
         }).mount('#app');
